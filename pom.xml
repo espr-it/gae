@@ -3,7 +3,7 @@
 
 	<groupId>it.espr</groupId>
 	<artifactId>esprit-gae</artifactId>
-	<version>0.0.2-SNAPSHOT</version>
+	<version>0.0.2</version>
 	<packaging>jar</packaging>
 
 	<name>esprit-gae</name>
@@ -30,7 +30,7 @@
 		<connection>scm:git:git@github.com/espr-it/gae.git</connection>
 		<developerConnection>scm:git:git@github.com:espr-it/gae.git</developerConnection>
 		<url>http://github.com/espr-it/gae/tree/master</url>
-		<tag>HEAD</tag>
+		<tag>esprit-gae-0.0.2</tag>
 	</scm>
 
 	<distributionManagement>
