@@ -1,4 +1,4 @@
-package it.espr.gae;
+package it.espr.gae.http;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -9,15 +9,24 @@ import java.net.URL;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class Http {
+public class StringHttpClient implements HttpClient<String> {
 
-	private static final Logger log = LoggerFactory.getLogger(Http.class);
+	private static final Logger log = LoggerFactory.getLogger(StringHttpClient.class);
 
-	public String get(String link) {
+	public String get(String url) {
+		return this.get(url, 0, true);
+	}
+
+	public String get(String url, int timeout, boolean followRedirects) {
 		StringBuffer content = new StringBuffer();
 		try {
-			URL url = new URL(link);
-			BufferedReader reader = new BufferedReader(new InputStreamReader(url.openStream()));
+			HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
+			if (timeout > 0) {
+				connection.setConnectTimeout(timeout);
+			}
+			connection.setInstanceFollowRedirects(followRedirects);
+
+			BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
 			String line;
 
 			while ((line = reader.readLine()) != null) {
@@ -25,7 +34,7 @@ public class Http {
 			}
 			reader.close();
 		} catch (Exception e) {
-			log.error("Problem when reading data from {}", link, e);
+			log.error("Problem when reading data from {}", url, e);
 		}
 		return content.toString();
 	}
