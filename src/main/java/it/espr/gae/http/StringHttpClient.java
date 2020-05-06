@@ -14,18 +14,23 @@ public class StringHttpClient implements HttpClient<String> {
 	private static final Logger log = LoggerFactory.getLogger(StringHttpClient.class);
 
 	public String get(String url) {
-		return this.get(url, 0, true);
+		return this.get(url, 0, true, "html");
 	}
 
-	public String get(String url, int timeout, boolean followRedirects) {
+	public String get(String url, int timeout, boolean followRedirects, String type) {
 		StringBuffer content = new StringBuffer();
 		try {
 			HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
 			if (timeout > 0) {
 				connection.setConnectTimeout(timeout);
 			}
+			
 			connection.setInstanceFollowRedirects(followRedirects);
-
+			
+			if ("json".equals(type)) {
+				connection.setRequestProperty("Accept", "application/json");
+			}
+			
 			BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
 			String line;
 
